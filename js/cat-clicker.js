@@ -46,12 +46,18 @@ setup on click events
 			viewSelectedCat.init();
 		},
 
-		implementCatSelector: function() {
-			// when cat selector is clicked, display the cat in the selected cat container
-			$('.cat-selector').each( function(i, el) {
+		// display the selected cat in the selected cat container
+		// uses a closure
+		showSelectedCat: function(iCopy) {
+			return  function() { 
+				console.log(iCopy);
+			}
+		},
 
-			});
+		getCatName: function(i) {
+			return model.cats[i].name;
 		}
+
 	};
 
 
@@ -64,8 +70,19 @@ setup on click events
 		render: function() {
 			// render the cat selector
 			var $catSelectorContainer = $('#cat-selector-container');
+
 			for (var i=0; i<model.cats.length; i++) {
-				$catSelectorContainer.append('<div class="cat-selector">' + model.cats[i].name + '</div>');
+
+				// create an element
+				$( '<div/>', {
+					'class': 'cat-selector',
+					text: octopus.getCatName(i),
+					click: octopus.showSelectedCat(i) // add an onclick event that will display selected cat details in the container area
+				})
+				.appendTo($catSelectorContainer);
+
+				// $catSelectorContainer.append('<div class="cat-selector">' + model.cats[i].name + '</div>');
+
 			}
 		},
 
