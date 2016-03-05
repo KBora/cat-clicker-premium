@@ -51,6 +51,7 @@ setup on click events
 		showSelectedCat: function(iCopy) {
 			return  function() { 
 				console.log(iCopy);
+				viewSelectedCat.render(iCopy);
 			}
 		},
 
@@ -75,7 +76,7 @@ setup on click events
 
 				// create an element
 				$( '<div/>', {
-					'class': 'cat-selector',
+					class: 'cat-selector',
 					text: octopus.getCatName(i),
 					click: octopus.showSelectedCat(i) // add an onclick event that will display selected cat details in the container area
 				})
@@ -96,7 +97,33 @@ setup on click events
 		init: function() {
 
 		},
-		render: function() {
+		render: function(i) {
+			// render the selected car
+			var $catSelectedContainer = $('#cat-selected-container');
+			$catSelectedContainer.empty();
+
+			var $img = $('<img/>', {
+				src: '.' + model.cats[i].imgURL,
+				alt: model.cats[i].name,
+				click: console.log(model.cats[i].name + ' clicked')
+			});
+			
+			$catSelectedContainer.append($img);
+
+			// catContainerHTML = $('<div id="' + cats[i].id + '" class="cat-container">')
+			// 				.append('<div class="cat-heading">' +  cats[i].name + '</div>')
+			// 				.append( $('<div class="cat-image"></div>')
+			// 					.append('<img src=".' +  cats[i].imgURL +'" alt="' + cats[i].name + '">')
+			// 					.click( (function(iCopy) {
+			// 						return function() {
+			// 							var nextCounter = cats[iCopy].clickCounter + 1
+			// 							cats[iCopy].clickCounter = nextCounter;
+			// 							$(this.parentElement).find('.cat-counter').text('You have clicked me ' + nextCounter  + ' times.');
+			// 						}	
+			// 					})(i))
+			// 					 )
+			// 				.append('<div class="cat-counter"></div>');
+			// $catContainers.append(catContainerHTML);
 
 		},
 		incrementCounter: function() {
