@@ -50,13 +50,29 @@ setup on click events
 		// uses a closure
 		showSelectedCat: function(iCopy) {
 			return  function() { 
-				console.log(iCopy);
+				console.log('viewSelectedCat.render' + iCopy);
 				viewSelectedCat.render(iCopy);
 			}
 		},
 
 		getCatName: function(i) {
 			return model.cats[i].name;
+		},
+
+		getCatImgURL: function(i) {
+			return model.cats[i].imgURL;
+		},
+
+		getCatCounter: function(i) {
+			return model.cats[i].clickCounter;
+		},
+
+		incrementCounter: function(i) {
+			return function() {
+				model.cats[i].clickCounter = model.cats[i].clickCounter + 1;		
+				viewSelectedCat.renderCounter(i);
+				console.log('increment cat counter = ' + model.cats[i].clickCounter );
+			}
 		}
 
 	};
@@ -78,11 +94,9 @@ setup on click events
 				$( '<div/>', {
 					class: 'cat-selector',
 					text: octopus.getCatName(i),
-					click: octopus.showSelectedCat(i) // add an onclick event that will display selected cat details in the container area
+					click: octopus.showSelectedCat(i) //  an onclick event that will display selected cat details in the container area
 				})
 				.appendTo($catSelectorContainer);
-
-				// $catSelectorContainer.append('<div class="cat-selector">' + model.cats[i].name + '</div>');
 
 			}
 		},
@@ -97,37 +111,34 @@ setup on click events
 		init: function() {
 
 		},
+
 		render: function(i) {
-			// render the selected car
+			// render the selected cat
 			var $catSelectedContainer = $('#cat-selected-container');
 			$catSelectedContainer.empty();
 
 			var $img = $('<img/>', {
-				src: '.' + model.cats[i].imgURL,
-				alt: model.cats[i].name,
-				click: console.log(model.cats[i].name + ' clicked')
+				src: '.' + octopus.getCatImgURL(i),
+				alt: octopus.getCatName(i),
+				click: octopus.incrementCounter(i)
 			});
-			
-			$catSelectedContainer.append($img);
 
-			// catContainerHTML = $('<div id="' + cats[i].id + '" class="cat-container">')
-			// 				.append('<div class="cat-heading">' +  cats[i].name + '</div>')
-			// 				.append( $('<div class="cat-image"></div>')
-			// 					.append('<img src=".' +  cats[i].imgURL +'" alt="' + cats[i].name + '">')
-			// 					.click( (function(iCopy) {
-			// 						return function() {
-			// 							var nextCounter = cats[iCopy].clickCounter + 1
-			// 							cats[iCopy].clickCounter = nextCounter;
-			// 							$(this.parentElement).find('.cat-counter').text('You have clicked me ' + nextCounter  + ' times.');
-			// 						}	
-			// 					})(i))
-			// 					 )
-			// 				.append('<div class="cat-counter"></div>');
-			// $catContainers.append(catContainerHTML);
+			//$img.click( octopus.incrementCounter(i) );
+			
+			var $container = $('<div/>').addClass('cat-container')
+												.append($('<div/>').addClass('cat-heading').html(octopus.getCatName(i)))
+												.append($('<div/>').addClass('cat-image')
+													.append($img))
+												.append($('<div/>').addClass('cat-counter'));
+
+			$catSelectedContainer.append($container);
+
+			viewSelectedCat.renderCounter(i);
 
 		},
-		incrementCounter: function() {
-			
+
+		renderCounter: function(i) {
+			$('.cat-counter').html('You have clicked me ' + octopus.getCatCounter(i) + ' times!');
 		}
 
 	};
