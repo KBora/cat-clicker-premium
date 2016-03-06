@@ -1,6 +1,7 @@
 $(function() {
 
 	var model = {
+
 		cats: [	{
 							name: 'Kitty',
 							imgURL : '/img/kitten1.jpg',
@@ -33,13 +34,6 @@ $(function() {
 	};
 
 	var octopus = {
-/*
-initialise model (no need in this case)
-tells views to render themselves 
-setup on click events
-1 on click of cat name changes current cat and tells view to render cat
-2 on click of image increases counter in model and view
-*/
 
 		init: function() {
 			viewCatSelector.init();
@@ -47,10 +41,8 @@ setup on click events
 		},
 
 		// display the selected cat in the selected cat container
-		// uses a closure
-		showSelectedCat: function(iCopy) {
+		selectCat: function(iCopy) {
 			return  function() { 
-				console.log('viewSelectedCat.render' + iCopy);
 				viewSelectedCat.render(iCopy);
 			}
 		},
@@ -70,8 +62,7 @@ setup on click events
 		incrementCounter: function(i) {
 			return function() {
 				model.cats[i].clickCounter = model.cats[i].clickCounter + 1;		
-				viewSelectedCat.renderCounter(i);
-				console.log('increment cat counter = ' + model.cats[i].clickCounter );
+				viewSelectedCat.displayClickCounter(i);
 			}
 		}
 
@@ -94,20 +85,17 @@ setup on click events
 				$( '<div/>', {
 					class: 'cat-selector',
 					text: octopus.getCatName(i),
-					click: octopus.showSelectedCat(i) //  an onclick event that will display selected cat details in the container area
+					click: octopus.selectCat(i) //  an onclick event that will display selected cat details in the container area
 				})
 				.appendTo($catSelectorContainer);
 
 			}
 		},
 
-		selectCat: function() {
-
-		}
-
 	};
 
 	var viewSelectedCat = {
+		
 		init: function() {
 
 		},
@@ -122,8 +110,6 @@ setup on click events
 				alt: octopus.getCatName(i),
 				click: octopus.incrementCounter(i)
 			});
-
-			//$img.click( octopus.incrementCounter(i) );
 			
 			var $container = $('<div/>').addClass('cat-container')
 												.append($('<div/>').addClass('cat-heading').html(octopus.getCatName(i)))
@@ -133,11 +119,11 @@ setup on click events
 
 			$catSelectedContainer.append($container);
 
-			viewSelectedCat.renderCounter(i);
+			viewSelectedCat.displayClickCounter(i);
 
 		},
 
-		renderCounter: function(i) {
+		displayClickCounter: function(i) {
 			$('.cat-counter').html('You have clicked me ' + octopus.getCatCounter(i) + ' times!');
 		}
 
