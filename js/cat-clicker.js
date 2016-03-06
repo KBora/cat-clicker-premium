@@ -47,8 +47,16 @@ $(function() {
 		// display the selected cat in the selected cat container
 		selectCat: function(iCopy) {
 			return  function() { 
+				model.selectedCatIndex = iCopy;
 				viewSelectedCat.render(iCopy);
+				if (octopus.isAdminAreaDisplayed) {
+					viewAdminArea.render();
+				}
 			}
+		},
+
+		getSelectedCatIndex: function(i) {
+			return model.selectedCatIndex;
 		},
 
 		getCatName: function(i) {
@@ -70,13 +78,13 @@ $(function() {
 			}
 		},
 
-		isAdminAreaHidden : function() {
-			return !model.showAdminArea;
+		isAdminAreaDisplayed : function() {
+			return model.showAdminArea;
 		},
 
-		showAdminArea : function(i) {
+		showAdminArea : function() {
 			model.showAdminArea = 1;
-			viewAdminArea.render(i);
+			viewAdminArea.render();
 		},
 
 		hideAdminArea : function() {
@@ -152,20 +160,28 @@ $(function() {
 	var viewAdminArea = {
 
 		init: function() {
-			// hide admin area by default since no cat is showing
 			octopus.hideAdminArea();
 
-			// add onclick event to admin button
-			$('#admin-button').click();
+			// add onclick event to admin button that shows admin area
+			$('#admin-button').click( function() {
+					octopus.showAdminArea();
+			});
+
+			// add onclick event to cancel button that hides admin area
+			$('#cancel-button').click( function() {
+					octopus.hideAdminArea();
+			});
 
 		}, 
 
 
-		render: function(i) {
+		render: function() {
+			$('#cat-admin-form').show();
 			// populate admin input fields with selected cat details
-			$('#cat-name').val(model.cats[i].name);
-			$('#cat-img').val(model.cats[i].imgURL);
-			$('#cat-counter').val(model.cats[i].clickCounter);
+			var catIndex = octopus.getSelectedCatIndex();
+			$('#cat-name').val(octopus.getCatName(catIndex));
+			$('#cat-img').val(octopus.getCatImgURL(catIndex));
+			$('#cat-counter').val(octopus.getCatCounter(catIndex));
 		},
 
 		hide: function() {
