@@ -38,7 +38,6 @@ $(function() {
 	var octopus = {
 
 		init: function() {
-			model.selectedCatIndex = 0;
 			viewCatSelector.init();
 			viewSelectedCat.init();
 			viewAdminArea.init();
@@ -90,6 +89,15 @@ $(function() {
 		hideAdminArea : function() {
 			model.showAdminArea = 0;
 			viewAdminArea.hide();
+		},
+
+		saveCatData: function() {
+			var selectedCat = model.cats[model.selectedCatIndex];
+			selectedCat.name =  $('#cat-name').val();
+			selectedCat.imgURL = $('#cat-img').val();
+			selectedCat.clickCounter = parseInt($('#cat-counter').val());
+			// re-render everything since values may have changed
+			octopus.init(); 
 		}
 
 
@@ -100,6 +108,7 @@ $(function() {
 	var viewCatSelector = {
 		
 		init: function() {
+			$('#cat-selector-container').empty();
 			viewCatSelector.render();
 		},
 
@@ -172,8 +181,12 @@ $(function() {
 					octopus.hideAdminArea();
 			});
 
-		}, 
+			// add onclick event to save button that saves form data into model
+			$('#save-button').click( function() {
+					octopus.saveCatData();
+			});
 
+		}, 
 
 		render: function() {
 			$('#cat-admin-form').show();
@@ -187,7 +200,6 @@ $(function() {
 		hide: function() {
 			$('#cat-admin-form').hide();
 		}
-
 
 	};
 
