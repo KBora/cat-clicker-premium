@@ -95,7 +95,7 @@ $(function() {
 	};
 
 	var viewSelectedCat = {
-		
+
 		init: function() {
 
 		},
@@ -132,8 +132,3 @@ $(function() {
 	octopus.init();
 
 });
-
-
-
-
-
