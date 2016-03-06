@@ -49,7 +49,7 @@ $(function() {
 			return  function() { 
 				model.selectedCatIndex = iCopy;
 				viewSelectedCat.render(iCopy);
-				if (octopus.isAdminAreaDisplayed) {
+				if (octopus.isAdminAreaDisplayed()) {
 					viewAdminArea.render();
 				}
 			}
@@ -79,7 +79,7 @@ $(function() {
 		},
 
 		isAdminAreaDisplayed : function() {
-			return model.showAdminArea;
+			return model.showAdminArea == 1;
 		},
 
 		showAdminArea : function() {
