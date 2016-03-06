@@ -29,15 +29,19 @@ $(function() {
 						}
 					],
 
-		selectedCatIndex : 0
+		selectedCatIndex : 0,
+
+		showAdminArea: 0
 
 	};
 
 	var octopus = {
 
 		init: function() {
+			model.selectedCatIndex = 0;
 			viewCatSelector.init();
 			viewSelectedCat.init();
+			viewAdminArea.init();
 		},
 
 		// display the selected cat in the selected cat container
@@ -64,9 +68,25 @@ $(function() {
 				model.cats[i].clickCounter = model.cats[i].clickCounter + 1;		
 				viewSelectedCat.displayClickCounter(i);
 			}
+		},
+
+		isAdminAreaHidden : function() {
+			return !model.showAdminArea;
+		},
+
+		showAdminArea : function(i) {
+			model.showAdminArea = 1;
+			viewAdminArea.render(i);
+		},
+
+		hideAdminArea : function() {
+			model.showAdminArea = 0;
+			viewAdminArea.hide();
 		}
 
-	};
+
+
+};
 
 
 	var viewCatSelector = {
@@ -97,7 +117,7 @@ $(function() {
 	var viewSelectedCat = {
 
 		init: function() {
-
+			viewSelectedCat.render(model.selectedCatIndex);
 		},
 
 		render: function(i) {
@@ -129,6 +149,34 @@ $(function() {
 
 	};
 
+	var viewAdminArea = {
+
+		init: function() {
+			// hide admin area by default since no cat is showing
+			octopus.hideAdminArea();
+
+			// add onclick event to admin button
+			$('#admin-button').click();
+
+		}, 
+
+
+		render: function(i) {
+			// populate admin input fields with selected cat details
+			$('#cat-name').val(model.cats[i].name);
+			$('#cat-img').val(model.cats[i].imgURL);
+			$('#cat-counter').val(model.cats[i].clickCounter);
+		},
+
+		hide: function() {
+			$('#cat-admin-form').hide();
+		}
+
+
+	};
+
+
 	octopus.init();
+
 
 });
